@@ -23,3 +23,68 @@ using UnityEngine.UI;
      }
  
  }
+ 
+ 
+ 
+ 
+ 
+ Test 2
+ 
+ 
+ // Health Variables
+    public float maxHealth = 100f, currentHealth = 100f, healthBarLength;
+    public GameObject player;
+    public void adjustCurrentHealth(float dmgORHeal)
+    {
+        
+        healthBarLength = (Screen.width / 2) * (currentHealth / maxHealth);
+        if (player.CompareTag("Enemy"))
+        {
+            currentHealth -= dmgORHeal;
+        }
+        else if (player.CompareTag("Team"))
+        {
+            currentHealth += dmgORHeal;
+        }
+        
+
+    }
+    void OnGUI()
+    {
+        GUI.Box(new Rect(10, 10, healthBarLength, 20), currentHealth + " / " + maxHealth);
+    }
+    public float range = 3.5f;
+    public Camera playerCam;
+    
+    void hit()
+    {
+        Ray ray = playerCam.ScreenPointToRay(new Vector2(Screen.width / 2, Screen.height / 2));
+        RaycastHit hitInfo;
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+           
+                if (Physics.Raycast(ray, out hitInfo , range))
+                {
+                    if (hitInfo.collider.tag.Contains("Enemy"))
+                    {
+                    // private Vector3 distance = Vector3.Distance();
+                    float dist = Vector3.Distance(hitInfo.collider.transform.position, player.transform.position);
+                    Debug.Log("That is a hit Comrade");
+                }
+                }
+            
+            //Debug.Log("That is a hit Comrade");
+            
+        }
+    }
+    void Start () {
+        healthBarLength = Screen.width / 2;
+    }
+	
+	// Update is called once per frame
+	void Update () {
+
+        hit();
+    }
+}
