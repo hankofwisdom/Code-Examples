@@ -1,0 +1,25 @@
+using UnityEngine.UI;
+ using UnityEngine;
+ using System.Collections;
+ 
+ public class Dammage : Photon.MonoBehaviour {
+     public Slider healthBarSlider;
+     public GameObject player;
+ 
+     public void Reduce(float p){
+         healthBarSlider.value -= p;
+         Debug.Log (p + " " + healthBarSlider.value);
+         }
+     private void OnTriggerEnter(Collider other) 
+     {
+         PhotonView photonView = this.photonView;
+         photonView.RPC("ReduceHealth", PhotonTargets.AllBufferedViaServer); // Call to RPC function
+     }
+     
+     [RPC]
+     public void ReduceHealth()
+     {
+         Reduce(10);
+     }
+ 
+ }
